@@ -1,0 +1,51 @@
+[build-system]
+requires = ["poetry-core", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[project]
+name = "llm_evals"
+authors = [{ name = "RyanSaxe", email = "ryancsaxe+1@gmail.com" }]
+readme = "README.md"
+dynamic = ["version", "description"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+]
+
+[tool.black]
+line-length = 120
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+
+[tool.poetry]
+name = "llm_evals"
+version = "0.0.1"
+description = ""
+authors = ["RyanSaxe <ryancsaxe+1@gmail.com>"]
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+
+[tool.flake8]
+ignore = [
+  "E203",  # whitespace before ':'
+  "E266",  # Too many leading '#' for block comments
+  "PL123", # Use Path.open instead of open
+  "U101",  # Unused argument that starts with underscore
+  "W503",  # Newline before binary operator
+]
+max-line-length = 120
+max-complexity = 18
+inline-quotes = "double"
+known-modules = ":[llm_evals]"
+application-names = "llm_evals"
+max-expression-complexity = 10
