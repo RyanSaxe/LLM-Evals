@@ -7,7 +7,7 @@ Repository to explore building custom LLM evaluations.
 The Needle in a Haystack evaluation shows how models fail to extract information in particular areas of the context as the context size grows. I wanted to design a similar evaluation for spatially constructed prompts. Many LLM use cases leverage structured data like tables and string representations of arrays. This data has clear spatial structure, and we can create evaluations to determine the ways these systems fail at extracting
 simple information from those structures such that we can try and improve these systems.
 
-The image below is the result of the "Patches" evaluation for Claude Opus.
+The image below is the result of the "Patches" evaluation for Claude Opus on with 9 specified patches.
 
 <img alt="Claude Opus" src="llm_evals/spacial/patches/results/claude-3-opus-20240229.png">
 
