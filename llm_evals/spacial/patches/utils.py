@@ -30,7 +30,7 @@ def create_grid(patch_size: int = 3, n_patches_per_row: Literal[1, 2, 3, 4, 5] =
             ['g', 'g', 'g', 'h', 'h', 'h', 'i', 'i', 'i']]
     """
     grid_size = patch_size * n_patches_per_row
-    grid = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
+    grid = [["" for _ in range(grid_size)] for _ in range(grid_size)]
 
     for i in range(grid_size):
         for j in range(grid_size):
@@ -59,7 +59,7 @@ def random_index_for_label(
 
 
 def create_grids(
-    n_grid: list[list[int]] | np.ndarray,
+    n_grid: np.ndarray,
     number_to_find: int,
     patch_size: int,
     n_patches_per_row: int,
@@ -68,7 +68,7 @@ def create_grids(
     """Create copies of `n_grid` that inserts the number `number_to_find` in inserted once in each patch
 
     Args:
-        n_grid (list[list[int]]): a 2D grid of size (n_patches_per_row ** 2, n_patches_per_row ** 2) with ints (atm 0-9)
+        n_grid (np.ndarray): a 2D grid of size (n_patches_per_row ** 2, n_patches_per_row ** 2) with ints (atm 0-9)
         number_to_find (int): an integer (atm 0-9) to insert to the grid. Grid is expected to exclude this integer.
         patch_size (int): the size of the square patches.
         n_patches_per_row (int): n_patches_per_row ** 2 = number of total patches.

@@ -13,7 +13,7 @@ class AnthropicModel(LLMInterface):
 
     def call(self, prompt, system_prompt, **kwargs):
         return (
-            self.client.messages.create(
+            self.client.messages.create(  # type: ignore
                 model=self.model,
                 system=system_prompt,
                 messages=[{"role": "user", "content": prompt}],

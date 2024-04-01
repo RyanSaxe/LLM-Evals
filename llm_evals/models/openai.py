@@ -13,7 +13,7 @@ class OpenAIModel(LLMInterface):
 
     def call(self, prompt, system_prompt, **kwargs):
         return (
-            self.client.chat.completions.create(
+            self.client.chat.completions.create(  # type: ignore
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": prompt},

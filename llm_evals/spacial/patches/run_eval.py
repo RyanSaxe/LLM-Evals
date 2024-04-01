@@ -58,11 +58,13 @@ def run_eval(args):
             n_grid = rng.choice(choices, size=grid_shape)
             outputs = create_grids(n_grid, args.number_to_find, patch_size, args.n_patches_per_row, rng)
             system_prompt = (
-                'You are an expert in Visual Spatial reasoning. Below is a square grid broken up into "patches": sections labeled with the same letter.'
+                'You are an expert in Visual Spatial reasoning. Below is a square grid broken up into "patches": '
+                "sections labeled with the same letter."
                 "\n\n"
                 f"{s_grid_for_prompt}"
                 "\n\n"
-                f"Your goal is, given a grid of the same size containing numbers, to determine which patch the number {args.number_to_find} in the grid belongs to."
+                "Your goal is, given a grid of the same size containing numbers, to determine which patch the number "
+                f"{args.number_to_find} in the grid belongs to."
                 "\n\n"
                 "Please respond only with the single letter of the corresponding patch and nothing else."
             )
@@ -110,9 +112,9 @@ def run_eval(args):
 
     for axis in fig.layout:
         if axis.startswith("xaxis") or axis.startswith("yaxis"):
-            fig.layout[axis].tickmode = "array"
-            fig.layout[axis].tickvals = []
-            fig.layout[axis].showticklabels = False
+            fig.layout[axis].tickmode = "array"  # type: ignore
+            fig.layout[axis].tickvals = []  # type: ignore
+            fig.layout[axis].showticklabels = False  # type: ignore
     fig.update_layout(
         height=400,
         width=400,
@@ -153,7 +155,7 @@ def main():
     )
     parser.add_argument(
         "--n_patches_per_row",
-        type=Literal[1, 2, 3, 4, 5],
+        type=Literal[1, 2, 3, 4, 5],  # type: ignore
         default=3,
         help="max size for each patch in the generated grid for the prompt",
     )
