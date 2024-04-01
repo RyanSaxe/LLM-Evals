@@ -1,8 +1,10 @@
-import numpy as np
-from string import alphabet
+from string import ascii_lowercase as alphabet
 from typing import Literal
 
-def create_grid(patch_size: int=3, sqrt_patches: Literal[1,2,3,4,5]=3) -> list[list[str]]:
+import numpy as np
+
+
+def create_grid(patch_size: int = 3, sqrt_patches: Literal[1, 2, 3, 4, 5] = 3) -> list[list[str]]:
     """create a grid meant to be used as an example label in prompts that
        group sections into labeled square patches where the labels are alphabet characters
 
@@ -29,29 +31,29 @@ def create_grid(patch_size: int=3, sqrt_patches: Literal[1,2,3,4,5]=3) -> list[l
     """
     grid_size = patch_size * sqrt_patches
     grid = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
-    
+
     for i in range(grid_size):
         for j in range(grid_size):
             label = (i // patch_size) * sqrt_patches + (j // patch_size)
             grid[i][j] = alphabet[label]
-            
+
     return grid
 
 
-def random_index_for_label(label: int, patch_size: int, sqrt_patches: int) -> list[int, int]:
+def random_index_for_label(label: int, patch_size: int, sqrt_patches: int, rng: np.random.Generator) -> tuple[int, int]:
     patch_row = label // sqrt_patches
     patch_col = label % sqrt_patches
 
     start_row = patch_row * patch_size
     start_col = patch_col * patch_size
 
-    row_offset = np.random.randint(patch_size)
-    col_offset = np.random.randint(patch_size)
+    row_offset = rng.integers(patch_size)
+    col_offset = rng.integers(patch_size)
 
-    final_row = start_row + row_offset
-    final_col = start_col + col_offset
+    random_row = start_row + row_offset
+    random_col = start_col + col_offset
 
-    return [final_row, final_col]
+    return random_row, random_col
 
 
 def create_grids(n_grid: list[list[int]], number_to_find: int, patch_size: int, sqrt_patches: int) -> dict[str, str]:
@@ -66,10 +68,11 @@ def create_grids(n_grid: list[list[int]], number_to_find: int, patch_size: int, 
     Returns:
         dict[str, str]: a mapping from each character to grid where `number_to_find` is in the patch of that key
     """
+    rng = np.random.default_rng(42)  # NOTE: eventually have seed be a script arg
     outputs = dict()
-    for i, label in enumerate(alphabet[:sqrt_patches ** 2]):
+    for i, label in enumerate(alphabet[: sqrt_patches**2]):
         grid = n_grid.copy()
-        answer = random_index_for_label(i, patch_size, sqrt_patches)
+        answer = random_index_for_label(i, patch_size, sqrt_patches, rng)
         grid[*answer] = number_to_find
-        outputs[label] = "\n".join([str(row).replace("'","") for row in grid.tolist()])
+        outputs[label] = "\n".join([str(row).replace("'", "") for row in grid.tolist()])
     return outputs
