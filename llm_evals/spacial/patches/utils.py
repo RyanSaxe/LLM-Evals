@@ -4,13 +4,13 @@ from typing import Literal
 import numpy as np
 
 
-def create_grid(patch_size: int = 3, sqrt_patches: Literal[1, 2, 3, 4, 5] = 3) -> list[list[str]]:
+def create_grid(patch_size: int = 3, n_patches_per_row: Literal[1, 2, 3, 4, 5] = 3) -> list[list[str]]:
     """create a grid meant to be used as an example label in prompts that
        group sections into labeled square patches where the labels are alphabet characters
 
     Args:
         patch_size (int, optional): the size of the square patches. Defaults to 3.
-        sqrt_patches (int, optional): sqrt_patches ** 2 = number of total patches. Defaults to 3.
+        n_patches_per_row (int, optional): n_patches_per_row ** 2 = number of total patches. Defaults to 3.
 
     Returns:
         list[list[str]]: a 2D grid that labels patches
@@ -29,20 +29,22 @@ def create_grid(patch_size: int = 3, sqrt_patches: Literal[1, 2, 3, 4, 5] = 3) -
             ['g', 'g', 'g', 'h', 'h', 'h', 'i', 'i', 'i'],
             ['g', 'g', 'g', 'h', 'h', 'h', 'i', 'i', 'i']]
     """
-    grid_size = patch_size * sqrt_patches
+    grid_size = patch_size * n_patches_per_row
     grid = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
 
     for i in range(grid_size):
         for j in range(grid_size):
-            label = (i // patch_size) * sqrt_patches + (j // patch_size)
+            label = (i // patch_size) * n_patches_per_row + (j // patch_size)
             grid[i][j] = alphabet[label]
 
     return grid
 
 
-def random_index_for_label(label: int, patch_size: int, sqrt_patches: int, rng: np.random.Generator) -> tuple[int, int]:
-    patch_row = label // sqrt_patches
-    patch_col = label % sqrt_patches
+def random_index_for_label(
+    label: int, patch_size: int, n_patches_per_row: int, rng: np.random.Generator
+) -> tuple[int, int]:
+    patch_row = label // n_patches_per_row
+    patch_col = label % n_patches_per_row
 
     start_row = patch_row * patch_size
     start_col = patch_col * patch_size
@@ -56,23 +58,28 @@ def random_index_for_label(label: int, patch_size: int, sqrt_patches: int, rng: 
     return random_row, random_col
 
 
-def create_grids(n_grid: list[list[int]], number_to_find: int, patch_size: int, sqrt_patches: int) -> dict[str, str]:
+def create_grids(
+    n_grid: list[list[int]] | np.ndarray,
+    number_to_find: int,
+    patch_size: int,
+    n_patches_per_row: int,
+    rng: np.random.Generator,
+) -> dict[str, str]:
     """Create copies of `n_grid` that inserts the number `number_to_find` in inserted once in each patch
 
     Args:
-        n_grid (list[list[int]]): a 2D grid of size (sqrt_patches ** 2, sqrt_patches ** 2) with integers (generally 0-9)
-        number_to_find (int): an integer (generally 0-9) to insert to the grid. Grid is expected to exclude this integer.
+        n_grid (list[list[int]]): a 2D grid of size (n_patches_per_row ** 2, n_patches_per_row ** 2) with ints (atm 0-9)
+        number_to_find (int): an integer (atm 0-9) to insert to the grid. Grid is expected to exclude this integer.
         patch_size (int): the size of the square patches.
-        sqrt_patches (int): sqrt_patches ** 2 = number of total patches.
+        n_patches_per_row (int): n_patches_per_row ** 2 = number of total patches.
 
     Returns:
         dict[str, str]: a mapping from each character to grid where `number_to_find` is in the patch of that key
     """
-    rng = np.random.default_rng(42)  # NOTE: eventually have seed be a script arg
     outputs = dict()
-    for i, label in enumerate(alphabet[: sqrt_patches**2]):
+    for i, label in enumerate(alphabet[: n_patches_per_row**2]):
         grid = n_grid.copy()
-        answer = random_index_for_label(i, patch_size, sqrt_patches, rng)
+        answer = random_index_for_label(i, patch_size, n_patches_per_row, rng)
         grid[*answer] = number_to_find
         outputs[label] = "\n".join([str(row).replace("'", "") for row in grid.tolist()])
     return outputs

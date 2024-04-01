@@ -5,13 +5,13 @@ from anthropic import Anthropic
 from llm_evals.models.base import LLMInterface
 
 
-class OpenAIModel(LLMInterface):
+class AnthropicModel(LLMInterface):
 
     @property
     def _client(self):
-        return Anthropic(api_key=os.environ.get("OPENAI_API_KEY"))
+        return Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
-    def __call__(self, system_prompt, prompt, **kwargs):
+    def call(self, prompt, system_prompt, **kwargs):
         return (
             self.client.messages.create(
                 model=self.model,

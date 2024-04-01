@@ -11,7 +11,7 @@ class OpenAIModel(LLMInterface):
     def _client(self):
         return OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-    def __call__(self, system_prompt, prompt, **kwargs):
+    def call(self, prompt, system_prompt, **kwargs):
         return (
             self.client.chat.completions.create(
                 messages=[

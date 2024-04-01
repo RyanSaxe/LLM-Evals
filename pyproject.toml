@@ -15,6 +15,9 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
 ]
 
+[project.scripts]
+eval-patches = "llm_evals.spacial.patches.run_eval:main"
+
 [tool.black]
 line-length = 120
 target-version = ['py311']
@@ -35,6 +38,9 @@ priority = "primary"
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
 python-dotenv = "^1.0.1"
+pandas = "^2.2.1"
+kaleido = "0.2.1"
+
 
 [tool.flake8]
 ignore = [
