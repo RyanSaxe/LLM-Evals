@@ -62,3 +62,10 @@ Smaller models like Claude Haiku and GPT-3.5-Turbo are currently very poor at th
 <img alt="Haiku" src="llm_evals/spacial/patches/results/claude-3-haiku-20240307.png"> <img alt="GPT 3.5 Turbo" src="llm_evals/spacial/patches/results/gpt-3.5-turbo-0125.png">
 
 ## . . . More Evals to Come . . .
+
+## TODO
+
+1. Generalize evaluation infrastructure and refactor patches to use a general infrastructure
+2. Support extension of patches for other types of questions (e.g. where is the smallest number in the grid)
+3. Add more spatial evaluations targeted at tabular data (e.g. ability to recall from columns -> possibly decide to leverage code-gen in python or sql here?)
+4. Update to support async
